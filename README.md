@@ -43,7 +43,7 @@ calls:
 ```elixir
 defmodule MyApp.Redis do
   use Supervisor
-  import NewRelicPhoenix.Measure, only: [measure_segment: 1]
+  import NewRelicPhoenix, only: [measure_segment: 2]
 
   def command([operation | _args] = command) do
     measure_segment {:redis, operation} do
