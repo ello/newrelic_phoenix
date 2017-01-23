@@ -7,6 +7,7 @@ defmodule NewRelicPhoenix.Application do
     import Supervisor.Spec, warn: false
 
     children = [
+      worker(:statman_server, [push_frequency(), [], gc_frequency()]),
       worker(:statman_aggregator, []),
     ]
 
@@ -26,7 +27,10 @@ defmodule NewRelicPhoenix.Application do
   end
 
   def push_frequency,
-    do: Application.get_env(:newrelic_phoenix, :push_frequency, 1000)
+    do: Application.get_env(:newrelic_phoenix, :push_frequency, 1_000)
+
+  def gc_frequency,
+    do: Application.get_env(:newrelic_phoenix, :gc_frequency, 100_000)
 
   def app_name,
     do: Application.get_env(:newrelic_phoenix, :application_name)

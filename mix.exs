@@ -11,13 +11,13 @@ defmodule NewRelicPhoenix.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger],
+    [extra_applications: [:logger, :lhttpc],
      mod: {NewRelicPhoenix.Application, []}]
   end
 
   defp deps do
     [
-      {:newrelic, "~> 0.1.0"},
+      {:newrelic, "~> 0.1.0", runtime: false},
     ]
   end
 end

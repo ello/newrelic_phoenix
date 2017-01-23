@@ -13,11 +13,12 @@ defmodule NewRelicPhoenix.Endpoint do
     finish_transaction()
   end
 
-  def phoenix_controller_render(:start, _compile_time, _run_time) do
-    start_segment({Phoenix.View, :render})
+  def phoenix_controller_render(:start, _compile_time, runtime) do
+    start_segment({:render, runtime[:template] || "template"})
+    runtime
   end
 
-  def phoenix_controller_render(:stop, _time_diff, _transaction) do
-    finish_segment({Phoenix.View, :render})
+  def phoenix_controller_render(:stop, _time_diff, runtime) do
+    finish_segment({:render, runtime[:template] || "template"})
   end
 end

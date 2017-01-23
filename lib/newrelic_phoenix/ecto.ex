@@ -26,9 +26,9 @@ defmodule NewRelicPhoenix.Ecto do
   end
 
   defp segment(%{source: source, result: {:ok, %{command: command}}}, part),
-    do: String.to_atom("#{command}_on_#{source}-#{part}")
+    do: "Ecto.#{part}.#{command}-#{source}"
   defp segment(_, part),
-    do: String.to_atom("unknown-#{part}")
+    do: "Ecto.#{part}.unknown"
 
   defp to_ms(native),
     do: System.convert_time_unit(native, :native, :microseconds)
