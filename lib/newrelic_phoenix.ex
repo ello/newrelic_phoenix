@@ -1,5 +1,6 @@
 defmodule NewRelicPhoenix do
   alias NewRelicPhoenix.{
+    Reporter,
     Transaction,
     TransactionRegistry,
   }
@@ -21,7 +22,7 @@ defmodule NewRelicPhoenix do
   def finish_transaction do
     TransactionRegistry.delete
     |> Transaction.finish
-    # TODO: send to statman/or aggregator
+    |> Reporter.aggregate
   end
 
   def start_segment(name) do
