@@ -16,6 +16,8 @@ defmodule NewRelicPhoenix.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:newrelic, "~> 0.1.0"},
+    ]
   end
 end
