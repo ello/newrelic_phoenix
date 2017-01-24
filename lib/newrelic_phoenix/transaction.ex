@@ -20,6 +20,7 @@ defmodule NewRelicPhoenix.Transaction do
     }
   end
 
+  def finish(%{started_at: nil} = transaction), do: transaction
   def finish(transaction) do
     duration = :timer.now_diff(:os.timestamp(), transaction.started_at)
     Map.put(transaction, :duration, duration)
@@ -31,10 +32,13 @@ defmodule NewRelicPhoenix.Transaction do
   end
 
   def finish_segment(transaction, name) do
-    {segment, transaction} = pop_in(transaction.segments[name])
-    duration = :timer.now_diff(:os.timestamp(), segment.started_at)
-    segment = Map.put(segment, :duration, duration)
-    Map.update!(transaction, :finished_segments, &([segment | &1]))
+    case pop_in(transaction.segments[name]) do
+      {nil, transaction}     -> transaction
+      {segment, transaction} ->
+        duration = :timer.now_diff(:os.timestamp(), segment.started_at)
+        segment = Map.put(segment, :duration, duration)
+        Map.update!(transaction, :finished_segments, &([segment | &1]))
+    end
   end
 
   def record_segment(transaction, name, duration) do

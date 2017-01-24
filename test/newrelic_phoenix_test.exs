@@ -2,6 +2,7 @@ defmodule NewRelicPhoenixTest do
   use ExUnit.Case
   doctest NewRelicPhoenix
   import NewRelicPhoenix
+  alias NewRelicPhoenix.Transaction
 
   defmodule StatmanStub do
     def record_value(label, duration) do
@@ -54,5 +55,17 @@ defmodule NewRelicPhoenixTest do
     end
     t = finish_transaction()
     assert_in_delta hd(t.finished_segments).duration, 100_000, 10_000
+  end
+
+  test "finish transaction not started should not error" do
+    assert %Transaction{} = finish_transaction()
+  end
+
+  test "start segment when transaction not started should not error" do
+    assert %Transaction{} = start_segment({:db, :fail})
+  end
+
+  test "finish segment not started not started should not error" do
+    assert %Transaction{} = finish_segment({:db, :fail})
   end
 end
