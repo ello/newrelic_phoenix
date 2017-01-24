@@ -9,8 +9,8 @@ defmodule NewRelicPhoenix.Reporter do
     transaction
   end
 
-  defp report_segments(%Transaction{name: name, segments: segments}) do
-    Enum.each segments, fn({segment_name, %{duration: duration}}) ->
+  defp report_segments(%Transaction{name: name, finished_segments: segments}) do
+    Enum.each segments, fn(%{name: segment_name, duration: duration}) ->
       statman().record_value({name, segment_name}, duration)
     end
   end

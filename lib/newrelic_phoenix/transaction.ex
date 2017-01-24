@@ -1,8 +1,15 @@
 defmodule NewRelicPhoenix.Transaction do
-  defstruct [name: nil, segments: %{}, started_at: nil, duration: nil, pid: nil]
+  defstruct [
+    name: nil,
+    segments: %{},
+    finished_segments: [],
+    started_at: nil,
+    duration: nil,
+    pid: nil
+  ]
 
   defmodule Segment do
-    defstruct [started_at: nil, duration: nil]
+    defstruct [name: nil, started_at: nil, duration: nil]
   end
 
   def start(name) do
@@ -19,19 +26,19 @@ defmodule NewRelicPhoenix.Transaction do
   end
 
   def start_segment(transaction, name) do
-    segment = %Segment{started_at: :os.timestamp()}
+    segment = %Segment{started_at: :os.timestamp(), name: name}
     Map.update!(transaction, :segments, &Map.merge(&1, %{name => segment}))
   end
 
   def finish_segment(transaction, name) do
-    update_in transaction.segments[name], fn(segment) ->
-      duration = :timer.now_diff(:os.timestamp(), segment.started_at)
-      Map.put(segment, :duration, duration)
-    end
+    {segment, transaction} = pop_in(transaction.segments[name])
+    duration = :timer.now_diff(:os.timestamp(), segment.started_at)
+    segment = Map.put(segment, :duration, duration)
+    Map.update!(transaction, :finished_segments, &([segment | &1]))
   end
 
   def record_segment(transaction, name, duration) do
-    segment = %Segment{duration: duration}
-    Map.update!(transaction, :segments, &Map.merge(&1, %{name => segment}))
+    segment = %Segment{duration: duration, name: name}
+    Map.update!(transaction, :finished_segments, &([segment | &1]))
   end
 end

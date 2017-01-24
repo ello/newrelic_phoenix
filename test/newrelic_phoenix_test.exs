@@ -27,11 +27,15 @@ defmodule NewRelicPhoenixTest do
     start_transaction("test2")
     record_segment({:db, :segment1}, 1_000)
     record_segment({:db, :segment2}, 2_000)
+    record_segment({:db, :segment2}, 3_000)
     t = finish_transaction()
-    assert t.segments[{:db, :segment1}].duration == 1_000
-    assert t.segments[{:db, :segment2}].duration == 2_000
+    assert [seg2b, seg2a, seg1] = t.finished_segments
+    assert seg1.duration  == 1_000
+    assert seg2a.duration == 2_000
+    assert seg2b.duration == 3_000
     assert_received {:record_value, {"test2", {:db, :segment1}}, 1_000}
     assert_received {:record_value, {"test2", {:db, :segment2}}, 2_000}
+    assert_received {:record_value, {"test2", {:db, :segment2}}, 3_000}
   end
 
   test "start/finish_segment" do
@@ -40,7 +44,7 @@ defmodule NewRelicPhoenixTest do
     Process.sleep(100)
     finish_segment({:db, :segment})
     t = finish_transaction()
-    assert_in_delta t.segments[{:db, :segment}].duration, 100_000, 10_000
+    assert_in_delta hd(t.finished_segments).duration, 100_000, 10_000
   end
 
   test "measure_segment" do
@@ -49,6 +53,6 @@ defmodule NewRelicPhoenixTest do
       Process.sleep(100)
     end
     t = finish_transaction()
-    assert_in_delta t.segments[{:db, :segment}].duration, 100_000, 10_000
+    assert_in_delta hd(t.finished_segments).duration, 100_000, 10_000
   end
 end
