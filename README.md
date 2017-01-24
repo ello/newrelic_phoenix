@@ -20,8 +20,7 @@ And add to your config:
 
 ```elixir
 config :newrelic_phoenix,
-  application_name: "MyApp",
-  environment_name: {:system, "ENVIRONMENT_NAME"}, # defaults to Mix.env
+  application_name: {:system "APPLICATION_NAME"}
   license_key: {:system, "NEW_RELIC_LICENSE_KEY"}
 
 config :my_app, MyApp.Endpoint,

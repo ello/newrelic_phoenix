@@ -33,8 +33,15 @@ defmodule NewRelicPhoenix.Application do
     do: Application.get_env(:newrelic_phoenix, :gc_frequency, 100_000)
 
   def app_name,
-    do: Application.get_env(:newrelic_phoenix, :application_name)
+    do: get_env(:newrelic_phoenix, :application_name)
 
   def license_key,
-    do: Application.get_env(:newrelic_phoenix, :license_key)
+    do: get_env(:newrelic_phoenix, :license_key)
+
+  defp get_env(app, key, default \\ nil) do
+    case Application.get_env(app, key, default) do
+      {:system, system} -> System.get_env(system)
+      other             -> other
+    end
+  end
 end
