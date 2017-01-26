@@ -1,3 +1,5 @@
+<img src="http://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/641/large_Ello.1000x1000.png" width="200px" height="200px" />
+
 # NewrelicPhoenix
 
 Yet another New Relic elixir library targeting Phoenix and Ecto.
@@ -36,7 +38,7 @@ This will give request time with segments for database time and view rendering.
 reported - including background preloads.**
 
 To add additional custom segments in the process serving the request you can
-use the `record_segment` macro, for example adding Redis segments to Redix 
+use the `record_segment` macro, for example adding Redis segments to Redix
 calls:
 
 ```elixir
@@ -77,14 +79,22 @@ Yes. The measuring code internally uses the Process storage to record the
 transaction in process before sending to a seperate process for reporting.
 Storing in the process dictionary works great for typical web requests, but it
 breaks down when you have things happen in other threads. In particular any
-ecto queries that happen outside the current thread, such as concurrent 
+ecto queries that happen outside the current thread, such as concurrent
 preloads are not recorded.
 
 ### Is there a better solution?
 
-Maybe, we would love feedback and love to improve this while not sacrificing
-ease of use.
-
-### Copyright
+Maybe, we would love feedback and would love to improve this while not
+sacrificing ease of use.
 
 
+## License
+This project is released under the [MIT License](blob/master/LICENSE.txt)
+
+## Code of Conduct
+Ello was created by idealists who believe that the essential nature of all
+human beings is to be kind, considerate, helpful, intelligent, responsible,
+and respectful of others. To that end, we will be enforcing
+[the Ello rules](https://ello.co/wtf/policies/rules/) within all of our open
+source projects. If you don’t follow the rules, you risk being ignored, banned,
+or reported for abuse.

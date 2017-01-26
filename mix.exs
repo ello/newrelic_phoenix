@@ -5,6 +5,8 @@ defmodule NewRelicPhoenix.Mixfile do
     [app: :newrelic_phoenix,
      version: "0.1.0",
      elixir: "~> 1.4",
+     package: package(),
+     description: description(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -19,5 +21,18 @@ defmodule NewRelicPhoenix.Mixfile do
     [
       {:newrelic, "~> 0.1.0", runtime: false},
     ]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/ello/newrelic_phoenix"
+      },
+    ]
+  end
+
+  defp description do
+    "Yet another New Relic elixir library targeting Phoenix and Ecto."
   end
 end
