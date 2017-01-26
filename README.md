@@ -89,7 +89,7 @@ sacrificing ease of use.
 
 
 ## License
-This project is released under the [MIT License](blob/master/LICENSE.txt)
+This project is released under the [MIT License](LICENSE.txt)
 
 ## Code of Conduct
 Ello was created by idealists who believe that the essential nature of all
