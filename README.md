@@ -6,6 +6,8 @@ Yet another New Relic elixir library targeting Phoenix and Ecto.
 
 Read "Rational" below for more on why.
 
+[![Build Status](https://travis-ci.org/ello/newrelic_phoenix.svg?branch=master)](https://travis-ci.org/ello/newrelic_phoenix)
+
 ## Installation
 
 Add `newrelic_phoenix` to your list of dependencies in `mix.exs`:
