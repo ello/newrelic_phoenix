@@ -25,8 +25,10 @@ defmodule NewRelicPhoenix.Ecto do
     record_segment({:db, segment(entry, "decode")}, to_ms(entry.decode_time))
   end
 
-  defp segment(%{source: source, result: {:ok, %{command: command}}}, part),
+  defp segment(%{source: source, result: {:ok, %{command: command}}}, part) when is_binary(source),
     do: "Ecto.#{part}.#{command}-#{source}"
+  defp segment(%{source: _, result: {:ok, %{command: command}}}, part),
+    do: "Ecto.#{part}.#{command}"
   defp segment(_, part),
     do: "Ecto.#{part}.unknown"
 
