@@ -34,9 +34,11 @@ defmodule NewRelicPhoenix.Ecto do
   defp segment(%{source: source, result: {:ok, %{command: command}}}, part) when is_binary(source) and is_binary(command),
     do: "Ecto.#{part}.#{command}-#{source}"
   defp segment(%{source: _, result: {:ok, %{command: command}}}, part) when is_binary(command),
-    do: "Ecto.#{part}.#{command}"
+    do: "Ecto.#{part}.#{command}-unknown"
+  defp segment(%{source: source, result: {:ok, _}}, part) when is_binary(source),
+    do: "Ecto.#{part}.unknown-#{source}"
   defp segment(_, part),
-    do: "Ecto.#{part}.unknown"
+    do: "Ecto.#{part}.unknown-unknown"
 
   defp to_ms(native),
     do: System.convert_time_unit(native, :native, :microseconds)
